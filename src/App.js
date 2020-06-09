@@ -1,26 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ExpenseList from "./components/ExpenseList";
 import ExpenseForm from "./components/ExpenseForm";
 import "./App.css";
 import Alert from "./components/Alert";
 
-const initialExpense = [
-  { id: 1, charge: "Rent", amount: 200 },
-  { id: 2, charge: "Buy Car", amount: 250 },
-  { id: 3, charge: "Buy House", amount: 5000 },
-];
+// const initialExpense = [
+//   { id: 1, charge: "Rent", amount: 200 },
+//   { id: 2, charge: "Buy Car", amount: 250 },
+//   { id: 3, charge: "Buy House", amount: 5000 }
+// ];
+
+const initialExpense = localStorage.getItem("expenses") ? JSON.parse(localStorage.getItem("expenses")) : [];
 
 function App() {
   const [expenses, setExpenses] = useState(initialExpense);
   const [charge, setCharge] = useState("");
   const [amount, setAmount] = useState("");
   const [alert, setAlert] = useState({ show: false });
+  const [edit, setEdit] = useState(false);
+  const [id, setId] = useState("");
 
-  const handleCharge = (e) => {
+  const handleCharge = e => {
     setCharge(e.target.value);
   };
 
-  const handleAmount = (e) => {
+  const handleAmount = e => {
     setAmount(e.target.value);
   };
 
@@ -33,32 +37,55 @@ function App() {
 
   const deleteItems = () => {
     setExpenses([]);
+    handleAlert({ type: "danger", text: "deleted all items" });
   };
 
-  const handleDelete = (id) => {
-    console.log("deleted", id);
+  const handleDelete = id => {
+    const deleteExpense = expenses.filter(item => item.id !== id);
+    setExpenses(deleteExpense);
+    handleAlert({ type: "danger", text: "Item deleted" });
   };
 
-  const handleEdit = (id) => {
-    console.log("edited", id);
+  const handleEdit = id => {
+    const itemToEdit = expenses.find(item => item.id === id);
+    setCharge(itemToEdit.charge);
+    setAmount(itemToEdit.amount);
+    setEdit(true);
+    setId(id);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     let addExpense = { id: Math.random(), charge, amount };
     if (charge !== "" && amount > 0) {
-      setExpenses([...expenses, addExpense]);
-      setCharge("");
-      setAmount("");
-      handleAlert({ type: "success", text: "Succesfully added an item" });
+      if (edit) {
+        const tempExpenses = expenses.map(item => {
+          return item.id === id ? { ...item, charge, amount } : { ...item };
+        });
+
+        setExpenses(tempExpenses);
+        setCharge("");
+        setAmount("");
+        setEdit(false);
+        handleAlert({ type: "success", text: "You edited an item" });
+      } else {
+        setExpenses([...expenses, addExpense]);
+        setCharge("");
+        setAmount("");
+        handleAlert({ type: "success", text: "Succesfully added an item" });
+      }
     } else {
       handleAlert({
         type: "danger",
-        text:
-          "Fields should not be emptied and amount should be greater than Zero",
+        text: "Fields should not be emptied and amount should be greater than Zero"
       });
     }
   };
+
+  useEffect(() => {
+    console.log("useEffect called");
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+  }, [expenses]);
 
   return (
     <div className="App">
@@ -66,20 +93,9 @@ function App() {
       <h2>Budget Calculator</h2>
       <br />
       <main className="App">
-        <ExpenseForm
-          charge={charge}
-          amount={amount}
-          handleAmount={handleAmount}
-          handleCharge={handleCharge}
-          handleSubmit={handleSubmit}
-        />
+        <ExpenseForm charge={charge} amount={amount} handleAmount={handleAmount} handleCharge={handleCharge} handleSubmit={handleSubmit} edit={edit} />
         <br />
-        <ExpenseList
-          handleDelete={handleDelete}
-          handleEdit={handleEdit}
-          deleteItems={deleteItems}
-          expenses={expenses}
-        />
+        <ExpenseList handleDelete={handleDelete} handleEdit={handleEdit} deleteItems={deleteItems} />
       </main>
       <hr />
       <h2>

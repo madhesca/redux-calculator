@@ -1,17 +1,14 @@
 import React from "react";
 import ExpenseItem from "./ExpenseItem";
+import { connect } from "react-redux";
+import { deleteItem } from "../redux/items/itemActions";
 
-const ExpenseList = ({ expenses, deleteItems, handleDelete, handleEdit }) => {
+const ExpenseList = ({ expenses, deleteItems, handleDeleteRedux, handleEdit }) => {
   return (
     <div>
       <ul>
-        {expenses.map((expense) => (
-          <ExpenseItem
-            key={expense.id}
-            expense={expense}
-            handleDelete={handleDelete}
-            handleEdit={handleEdit}
-          />
+        {expenses.map(expense => (
+          <ExpenseItem key={expense.id} expense={expense} handleDelete={handleDeleteRedux} handleEdit={handleEdit} />
         ))}
       </ul>
       <br />
@@ -20,4 +17,12 @@ const ExpenseList = ({ expenses, deleteItems, handleDelete, handleEdit }) => {
   );
 };
 
-export default ExpenseList;
+const mapStateToProps = state => ({
+  expenses: state.items
+});
+
+const mapDispatchToProps = dispatch => ({
+  handleDeleteRedux: param => dispatch(deleteItem(param))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExpenseList);
