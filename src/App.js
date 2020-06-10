@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import ExpenseList from "./components/ExpenseList";
 import ExpenseForm from "./components/ExpenseForm";
 import "./App.css";
@@ -10,11 +11,9 @@ import Alert from "./components/Alert";
 //   { id: 3, charge: "Buy House", amount: 5000 }
 // ];
 
-const initialExpense = localStorage.getItem("expenses")
-  ? JSON.parse(localStorage.getItem("expenses"))
-  : [];
+const initialExpense = localStorage.getItem("expenses") ? JSON.parse(localStorage.getItem("expenses")) : [];
 
-function App() {
+function App({ show }) {
   const [expenses, setExpenses] = useState(initialExpense);
   const [charge, setCharge] = useState("");
   const [amount, setAmount] = useState("");
@@ -22,11 +21,11 @@ function App() {
   const [edit, setEdit] = useState(false);
   const [id, setId] = useState("");
 
-  const handleCharge = (e) => {
+  const handleCharge = e => {
     setCharge(e.target.value);
   };
 
-  const handleAmount = (e) => {
+  const handleAmount = e => {
     setAmount(e.target.value);
   };
 
@@ -42,26 +41,26 @@ function App() {
     handleAlert({ type: "danger", text: "deleted all items" });
   };
 
-  const handleDelete = (id) => {
-    const deleteExpense = expenses.filter((item) => item.id !== id);
+  const handleDelete = id => {
+    const deleteExpense = expenses.filter(item => item.id !== id);
     setExpenses(deleteExpense);
     handleAlert({ type: "danger", text: "Item deleted" });
   };
 
-  const handleEdit = (id) => {
-    const itemToEdit = expenses.find((item) => item.id === id);
+  const handleEdit = id => {
+    const itemToEdit = expenses.find(item => item.id === id);
     setCharge(itemToEdit.charge);
     setAmount(itemToEdit.amount);
     setEdit(true);
     setId(id);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     let addExpense = { id: Math.random(), charge, amount };
     if (charge !== "" && amount > 0) {
       if (edit) {
-        const tempExpenses = expenses.map((item) => {
+        const tempExpenses = expenses.map(item => {
           return item.id === id ? { ...item, charge, amount } : { ...item };
         });
 
@@ -79,8 +78,7 @@ function App() {
     } else {
       handleAlert({
         type: "danger",
-        text:
-          "Fields should not be emptied and amount should be greater than Zero",
+        text: "Fields should not be emptied and amount should be greater than Zero"
       });
     }
   };
@@ -92,17 +90,13 @@ function App() {
 
   return (
     <div className="App">
-      {alert.show ? <Alert type={alert.type} text={alert.text} /> : null}
+      {alert.show ? <Alert /> : null}
       <h2>Budget Calculator</h2>
       <br />
       <main className="App">
         <ExpenseForm edit={edit} />
         <br />
-        <ExpenseList
-          handleDelete={handleDelete}
-          handleEdit={handleEdit}
-          deleteItems={deleteItems}
-        />
+        <ExpenseList handleDelete={handleDelete} handleEdit={handleEdit} deleteItems={deleteItems} />
       </main>
       <hr />
       <h2>
@@ -117,4 +111,8 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = state => ({
+  show: state.alerts.show
+});
+
+export default connect(mapStateToProps)(App);

@@ -1,19 +1,19 @@
-import { SUBMIT_FORM, HANDLE_CHARGE, HANDLE_AMOUNT } from "./formTypes";
+import { SUBMIT_FORM, HANDLE_CHARGE, HANDLE_AMOUNT, DEFAULT } from "./formTypes";
 
-export const setForm = (data) => ({
+export const setForm = data => ({
   type: SUBMIT_FORM,
-  payload: data,
+  payload: data
 });
 
-export const handleCharge = (charge) => ({
+export const handleCharge = charge => ({
   type: HANDLE_CHARGE,
   payload: charge.target.value,
-  charge: charge.target.value,
+  charge: charge.target.value
 });
 
-export const handleAmount = (amount) => ({
+export const handleAmount = amount => ({
   type: HANDLE_AMOUNT,
-  payload: amount,
+  payload: amount
 });
 
 export const handleSubmit = (e, charge, amount) => {
@@ -21,11 +21,18 @@ export const handleSubmit = (e, charge, amount) => {
   const singleExpense = {
     id: Math.random(),
     charge,
-    amount,
+    amount
   };
-
-  return {
-    type: SUBMIT_FORM,
-    payload: singleExpense,
-  };
+  if (charge !== "" && amount > 0) {
+    return {
+      type: SUBMIT_FORM,
+      payload: singleExpense
+    };
+  } else {
+    // handleAlert({ type: "danger", text: "Input fields should not be emptied" });
+    alert("wrong");
+    return {
+      type: DEFAULT
+    };
+  }
 };

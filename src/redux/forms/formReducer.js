@@ -1,8 +1,8 @@
-import { HANDLE_CHARGE, HANDLE_AMOUNT } from "./formTypes";
+import { DEFAULT, HANDLE_CHARGE, HANDLE_AMOUNT } from "./formTypes";
 
 const initialState = {
   charge: "",
-  amount: "",
+  amount: ""
 };
 
 const formReducer = (state = initialState, action) => {
@@ -10,12 +10,17 @@ const formReducer = (state = initialState, action) => {
     case HANDLE_CHARGE:
       return {
         ...state,
-        charge: action.payload,
+        charge: action.payload
       };
     case HANDLE_AMOUNT:
       return {
         ...state,
-        amount: action.payload,
+        amount: action.payload
+      };
+
+    case DEFAULT:
+      return {
+        ...state
       };
 
     default:
