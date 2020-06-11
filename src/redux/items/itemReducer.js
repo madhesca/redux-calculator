@@ -1,4 +1,4 @@
-import { DELETE_ITEM, EDIT_ITEM } from "./itemTypes";
+import { DELETE_ITEM, EDIT_ITEM, DELETE_ALL } from "./itemTypes";
 import { SUBMIT_FORM } from "./../forms/formTypes";
 
 const initialExpense = [
@@ -9,11 +9,18 @@ const initialExpense = [
 
 const itemReducer = (state = initialExpense, action) => {
   switch (action.type) {
-    case DELETE_ITEM:
-      return [...state.filter((item) => item.id !== action.payload)];
     case SUBMIT_FORM:
       return [...state, action.payload];
 
+    case EDIT_ITEM:
+      const newState = action.payload;
+      return [newState];
+
+    case DELETE_ITEM:
+      return [...state.filter((item) => item.id !== action.payload)];
+
+    case DELETE_ALL:
+      return [];
     default:
       return state;
   }

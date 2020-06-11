@@ -1,4 +1,5 @@
 import React from "react";
+// import { connect } from "react-redux";
 
 function ExpenseItem({ expense, handleDelete, handleEdit }) {
   const { id, charge, amount } = expense;
@@ -15,4 +16,9 @@ function ExpenseItem({ expense, handleDelete, handleEdit }) {
   );
 }
 
+// const mapStateToProps = (state) => ({
+//   expenses: state.items,
+// });
+
+// export default connect(mapStateToProps)(ExpenseItem);
 export default ExpenseItem;
