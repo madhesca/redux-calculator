@@ -1,4 +1,4 @@
-import { DEFAULT, HANDLE_CHARGE, HANDLE_AMOUNT } from "./formTypes";
+import { DEFAULT, HANDLE_CHARGE, HANDLE_AMOUNT, EMPTY } from "./formTypes";
 
 const initialState = {
   charge: "",
@@ -23,6 +23,12 @@ const formReducer = (state = initialState, action) => {
         ...state
       };
 
+    case EMPTY:
+      return {
+        ...state,
+        charge: "",
+        amount: ""
+      };
     default:
       return state;
   }

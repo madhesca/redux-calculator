@@ -1,35 +1,45 @@
 import { DELETE_ITEM, EDIT_ITEM, DELETE_ALL } from "./itemTypes";
 import { ADDED } from "./../alert/alertTypes";
+import { HANDLE_CHARGE, HANDLE_AMOUNT } from "../forms/formTypes";
+import { SET_EDIT } from "../edit/editTypes";
 
 export const addAlert = () => ({
-  type: ADDED,
+  type: ADDED
 });
 
-export const deleteItem = (id) => {
+export const deleteItem = id => {
   addAlert();
   return {
     type: DELETE_ITEM,
-    payload: id,
+    payload: id
   };
 };
+
+const setEdit = id => ({
+  type: SET_EDIT,
+  payload: id
+});
 
 export const editItem = (id, expenses) => {
-  console.log(expenses);
-  // const edited = expense.find((item) => item.id === id);
-  // const itemToEdit = {
-  //   charge: edited.charge,
-  //   amount: edited.amount,
-  // };
-  // return {
-  //   type: EDIT_ITEM,
-  //   payload: itemToEdit,
-  // };
-  return {
-    type: EDIT_ITEM,
-    payload: expenses,
+  const editThis = expenses.find(item => item.id === id);
+
+  return dispatch => {
+    dispatch(handleCharge(editThis.charge));
+    dispatch(handleAmount(editThis.amount));
+    dispatch(setEdit(id));
   };
 };
 
+const handleCharge = charge => ({
+  type: HANDLE_CHARGE,
+  payload: charge
+});
+
+const handleAmount = amount => ({
+  type: HANDLE_AMOUNT,
+  payload: amount
+});
+
 export const deleteAll = () => ({
-  type: DELETE_ALL,
+  type: DELETE_ALL
 });

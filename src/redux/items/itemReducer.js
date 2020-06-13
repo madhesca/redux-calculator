@@ -1,10 +1,10 @@
-import { DELETE_ITEM, EDIT_ITEM, DELETE_ALL } from "./itemTypes";
+import { DELETE_ITEM, EDIT_ITEM, DELETE_ALL, EDIT_FORM } from "./itemTypes";
 import { SUBMIT_FORM } from "./../forms/formTypes";
 
 const initialExpense = [
   { id: 1, charge: "Rent", amount: 200 },
   { id: 2, charge: "Buy Car", amount: 250 },
-  { id: 3, charge: "Buy House", amount: 5000 },
+  { id: 3, charge: "Buy House", amount: 5000 }
 ];
 
 const itemReducer = (state = initialExpense, action) => {
@@ -12,12 +12,15 @@ const itemReducer = (state = initialExpense, action) => {
     case SUBMIT_FORM:
       return [...state, action.payload];
 
+    case EDIT_FORM:
+      return action.payload;
+
     case EDIT_ITEM:
       const newState = action.payload;
       return [newState];
 
     case DELETE_ITEM:
-      return [...state.filter((item) => item.id !== action.payload)];
+      return [...state.filter(item => item.id !== action.payload)];
 
     case DELETE_ALL:
       return [];
