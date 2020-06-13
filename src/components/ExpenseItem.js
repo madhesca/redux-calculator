@@ -7,7 +7,7 @@ function ExpenseItem({ expense, handleDelete, handleEdit, expenses }) {
     <div>
       <br />
       <li>
-        {charge} and {amount} -- {"     "}
+        {charge} amounting to: P {amount} -- {"     "}
         <button key={id} onClick={() => handleEdit(id, expenses)}>
           Edit
         </button>

@@ -26,7 +26,6 @@ const alertReducer = (state = initialState, action) => {
     case NOALERT:
       return {
         ...state,
-
         show: false
       };
     default:

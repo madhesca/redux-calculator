@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import ExpenseList from "./components/ExpenseList";
 import ExpenseForm from "./components/ExpenseForm";
@@ -11,29 +11,29 @@ import Alert from "./components/Alert";
 //   { id: 3, charge: "Buy House", amount: 5000 }
 // ];
 
-const initialExpense = localStorage.getItem("expenses") ? JSON.parse(localStorage.getItem("expenses")) : [];
+// const initialExpense = localStorage.getItem("expenses") ? JSON.parse(localStorage.getItem("expenses")) : [];
 
 function App({ show, expenses }) {
-  const [charge, setCharge] = useState("");
-  const [amount, setAmount] = useState("");
-  const [alert, setAlert] = useState({ show: false });
-  const [edit, setEdit] = useState(false);
-  const [id, setId] = useState("");
+  // const [charge, setCharge] = useState("");
+  // const [amount, setAmount] = useState("");
 
-  const handleCharge = e => {
-    setCharge(e.target.value);
-  };
+  // const [edit, setEdit] = useState(false);
+  // const [id, setId] = useState("");
 
-  const handleAmount = e => {
-    setAmount(e.target.value);
-  };
+  // // const handleCharge = e => {
+  //   setCharge(e.target.value);
+  // };
 
-  const handleAlert = ({ type, text }) => {
-    setAlert({ show: true, type, text });
-    setTimeout(() => {
-      setAlert({ show: false });
-    }, 3000);
-  };
+  // const handleAmount = e => {
+  //   setAmount(e.target.value);
+  // };
+
+  // const handleAlert = ({ type, text }) => {
+  //   setAlert({ show: true, type, text });
+  //   setTimeout(() => {
+  //     setAlert({ show: false });
+  //   }, 3000);
+  // };
 
   // const deleteItems = () => {
   //   setExpenses([]);
@@ -46,13 +46,13 @@ function App({ show, expenses }) {
   //   handleAlert({ type: "danger", text: "Item deleted" });
   // };
 
-  const handleEdit = id => {
-    const itemToEdit = expenses.find(item => item.id === id);
-    setCharge(itemToEdit.charge);
-    setAmount(itemToEdit.amount);
-    setEdit(true);
-    setId(id);
-  };
+  // const handleEdit = id => {
+  //   const itemToEdit = expenses.find(item => item.id === id);
+  //   setCharge(itemToEdit.charge);
+  //   setAmount(itemToEdit.amount);
+  //   setEdit(true);
+  //   setId(id);
+  // };
 
   // const handleSubmit = e => {
   //   e.preventDefault();
@@ -89,7 +89,7 @@ function App({ show, expenses }) {
 
   return (
     <div className="App">
-      {alert.show ? <Alert /> : null}
+      {show ? <Alert /> : null}
       <h2>Budget Calculator</h2>
       <br />
       <main className="App">
@@ -111,7 +111,8 @@ function App({ show, expenses }) {
 }
 
 const mapStateToProps = state => ({
-  expenses: state.items
+  expenses: state.items,
+  show: state.alerts.show
 });
 
 export default connect(mapStateToProps)(App);

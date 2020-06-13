@@ -1,11 +1,13 @@
 import { DELETE_ITEM, EDIT_ITEM, DELETE_ALL, EDIT_FORM } from "./itemTypes";
 import { SUBMIT_FORM } from "./../forms/formTypes";
 
-const initialExpense = [
-  { id: 1, charge: "Rent", amount: 200 },
-  { id: 2, charge: "Buy Car", amount: 250 },
-  { id: 3, charge: "Buy House", amount: 5000 }
-];
+// const initialExpense = [
+//   { id: 1, charge: "Rent", amount: 200 },
+//   { id: 2, charge: "Buy Car", amount: 250 },
+//   { id: 3, charge: "Buy House", amount: 5000 }
+// ];
+
+const initialExpense = localStorage.getItem("expenses") ? JSON.parse(localStorage.getItem("expenses")) : [];
 
 const itemReducer = (state = initialExpense, action) => {
   switch (action.type) {

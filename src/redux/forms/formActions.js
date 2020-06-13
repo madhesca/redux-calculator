@@ -2,11 +2,6 @@ import { SUBMIT_FORM, HANDLE_CHARGE, HANDLE_AMOUNT, DEFAULT, EMPTY } from "./for
 import { EDIT_FORM } from "../items/itemTypes";
 import { NO_EDIT } from "../edit/editTypes";
 
-const editForm = edits => ({
-  type: EDIT_FORM,
-  payload: edits
-});
-
 export const setForm = data => ({
   type: SUBMIT_FORM,
   payload: data

@@ -1,16 +1,28 @@
 import React from "react";
 import { connect } from "react-redux";
 import { handleCharge, handleAmount, handleSubmit, empty, noEdit } from "../redux/forms/formActions";
-import store from "../redux/store";
+import { addAlert, noAlert } from "../redux/items/itemActions";
 
-function ExpenseForm({ noEdit, expenses, edits, empty, charge, amount, handleCharge, handleAmount, handleSubmit }) {
+function ExpenseForm({ addAlert, noAlert, noEdit, expenses, edits, empty, charge, amount, handleCharge, handleAmount, handleSubmit }) {
   console.log("expenses", expenses);
   console.log("edits", edits.isEdit);
   console.log("charge", charge);
 
   return (
     <div>
-      <form onSubmit={e => handleSubmit(e, charge, amount, expenses, edits) && empty() && noEdit()}>
+      <form
+        onSubmit={e =>
+          handleSubmit(e, charge, amount, expenses, edits) &&
+          empty() &&
+          noEdit() &&
+          setTimeout(() => {
+            noAlert();
+          }, 3000) &&
+          charge
+            ? addAlert()
+            : null
+        }
+      >
         <input type="text" placeholder="Ex. Buy House" onChange={e => handleCharge(e)} value={charge} />
         <input type="text" placeholder="200" onChange={e => handleAmount(e.target.value)} value={amount} />
         <button type="submit">{edits.isEdit ? "Edit" : "Submit"}</button>
@@ -31,7 +43,9 @@ const mapDispatchToProps = dispatch => ({
   handleAmount: there => dispatch(handleAmount(there)),
   handleSubmit: (everywhere, charge, amount, expenses, edits) => dispatch(handleSubmit(everywhere, charge, amount, expenses, edits)),
   empty: () => dispatch(empty()),
-  noEdit: () => dispatch(noEdit())
+  noEdit: () => dispatch(noEdit()),
+  addAlert: () => dispatch(addAlert()),
+  noAlert: () => dispatch(noAlert())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);

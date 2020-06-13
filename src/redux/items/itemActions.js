@@ -1,11 +1,17 @@
-import { DELETE_ITEM, EDIT_ITEM, DELETE_ALL } from "./itemTypes";
-import { ADDED } from "./../alert/alertTypes";
+import { DELETE_ITEM, DELETE_ALL } from "./itemTypes";
+import { ADDED, NOALERT } from "./../alert/alertTypes";
 import { HANDLE_CHARGE, HANDLE_AMOUNT } from "../forms/formTypes";
 import { SET_EDIT } from "../edit/editTypes";
 
 export const addAlert = () => ({
   type: ADDED
 });
+
+export const noAlert = () => {
+  return {
+    type: NOALERT
+  };
+};
 
 export const deleteItem = id => {
   addAlert();
@@ -40,6 +46,8 @@ const handleAmount = amount => ({
   payload: amount
 });
 
-export const deleteAll = () => ({
-  type: DELETE_ALL
-});
+export const deleteAll = () => {
+  return {
+    type: DELETE_ALL
+  };
+};
